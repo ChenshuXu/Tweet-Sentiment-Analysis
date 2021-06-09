@@ -6,14 +6,9 @@ from collections import defaultdict, Counter
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 from nltk.tokenize import word_tokenize
-import emoji
 from datetime import datetime
 
 # credentials contain:
-consumer_key = ""
-consumer_secret = ""
-access_token = ""
-token_secret = ""
 bearer_token = ""
 
 # emoticons
@@ -248,8 +243,8 @@ class TweetAnalysis:
             print("...{} tweets downloaded so far".format(len(all_tweets)))
 
         # write the json
-        with open("{}_tweets.json".format(self.username), 'w') as f:
-            json.dump({'data': all_tweets}, f)
+        # with open("{}_tweets.json".format(self.username), 'w') as f:
+        #     json.dump({'data': all_tweets}, f)
 
         self.all_tweets = all_tweets
 
@@ -354,20 +349,20 @@ class TweetAnalysis:
                          'account_activity': activity_list_2}
             json.dump(json_data, f)
 
-        with open("{}_processed_tweet.json".format(self.username), 'w') as f:
-            json_data = {'data': self.processed_tweets}
-            json.dump(json_data, f)
+        # with open("{}_processed_tweet.json".format(self.username), 'w') as f:
+        #     json_data = {'data': self.processed_tweets}
+        #     json.dump(json_data, f)
 
 
 def main():
-    # nltk.download([
-    #     "names",
-    #     "stopwords",
-    #     "state_union",
-    #     "averaged_perceptron_tagger",
-    #     "vader_lexicon",
-    #     "punkt",
-    # ])
+    nltk.download([
+        "names",
+        "stopwords",
+        "state_union",
+        "averaged_perceptron_tagger",
+        "vader_lexicon",
+        "punkt",
+    ])
 
     dumper = TweetAnalysis("certikorg")
     dumper.get_all_tweets_from_username()
