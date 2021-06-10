@@ -9,7 +9,7 @@ from nltk.tokenize import word_tokenize
 from datetime import datetime
 
 # credentials contain:
-bearer_token = ""
+bearer_token = "AAAAAAAAAAAAAAAAAAAAAAkEQQEAAAAAa0%2BWUWtFE1If8QMV6FBu6gseBX4%3D0G0VV7PpvMGp7F2uuoqPqsUvj9QyTnAYSC7q2hOaMHfaVcAaBV"
 
 # emoticons
 def load_dict_smileys():
