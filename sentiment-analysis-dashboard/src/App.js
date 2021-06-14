@@ -14,7 +14,7 @@ import {
 import ReactWordcloud from 'react-wordcloud';
 import './App.css';
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 const { Option } = Select;
 const AnalysisResult = require('./certikorg_tweet_analysis.json');
 
