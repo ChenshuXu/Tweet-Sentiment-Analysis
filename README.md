@@ -1,5 +1,7 @@
 # Tweet-Sentiment-Analysis
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/39e798f3-2a85-43f2-bea2-b8777cd6673e/deploy-status)](https://app.netlify.com/sites/sharp-hawking-0892ce/deploys)
+
 Here is the link to a demo: https://sharp-hawking-0892ce.netlify.app/
 
 ##### How to start the web application
