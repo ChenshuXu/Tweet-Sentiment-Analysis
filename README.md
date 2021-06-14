@@ -1,5 +1,7 @@
 # Tweet-Sentiment-Analysis
 
+Here is the link to a demo: https://sharp-hawking-0892ce.netlify.app/
+
 ##### How to start the web application
 
 The web application is created with create-react-app. In the `sentiment-analysis-dashboard` folder, run `npm install` and `npm start`. The web application will look like this.
