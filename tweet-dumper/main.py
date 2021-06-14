@@ -7,9 +7,12 @@ import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 from nltk.tokenize import word_tokenize
 from datetime import datetime
+import os
 
 # credentials contain:
 bearer_token = "AAAAAAAAAAAAAAAAAAAAAAkEQQEAAAAAa0%2BWUWtFE1If8QMV6FBu6gseBX4%3D0G0VV7PpvMGp7F2uuoqPqsUvj9QyTnAYSC7q2hOaMHfaVcAaBV"
+
+export_directory = "../sentiment-analysis-dashboard/src/"
 
 # emoticons
 def load_dict_smileys():
@@ -211,6 +214,8 @@ class TweetAnalysis:
         self.processed_tweets = []
         self.word_freq = defaultdict(int)  # key: word, value: count
         self.account_activity = defaultdict(int)  # key: datetime, value: count
+        self.like_count = defaultdict(int)
+        self.retweet_count = defaultdict(int)
         self.result = {'pos': 0, 'neg': 0, 'neu': 0}
         self.sia = SentimentIntensityAnalyzer()
 
@@ -225,7 +230,7 @@ class TweetAnalysis:
 
         headers = {"Authorization": "Bearer {}".format(bearer_token)}
         id = self.get_user_id()
-        url = "https://api.twitter.com/2/users/{}/tweets?max_results=100&tweet.fields=created_at,id,text".format(id)
+        url = "https://api.twitter.com/2/users/{}/tweets?max_results=100&tweet.fields=created_at,id,text,public_metrics".format(id)
         response = requests.request("GET", url, headers=headers)
         new_tweets = response.json()['data']
         all_tweets.extend(new_tweets)
@@ -233,7 +238,7 @@ class TweetAnalysis:
 
         while len(new_tweets) > 0:
             print("getting tweets next token {}".format(next_token))
-            url = "https://api.twitter.com/2/users/{}/tweets?max_results=100&pagination_token={}&tweet.fields=created_at,id,text".format(id, next_token)
+            url = "https://api.twitter.com/2/users/{}/tweets?max_results=100&pagination_token={}&tweet.fields=created_at,id,text,public_metrics".format(id, next_token)
             response = requests.request("GET", url, headers=headers)
             if 'next_token' not in response.json()['meta'].keys():
                 break
@@ -243,8 +248,8 @@ class TweetAnalysis:
             print("...{} tweets downloaded so far".format(len(all_tweets)))
 
         # write the json
-        # with open("{}_tweets.json".format(self.username), 'w') as f:
-        #     json.dump({'data': all_tweets}, f)
+        with open("{}_tweets.json".format(self.username), 'w') as f:
+            json.dump({'data': all_tweets}, f)
 
         self.all_tweets = all_tweets
 
@@ -321,20 +326,28 @@ class TweetAnalysis:
             date = datetime.strptime(time_text, '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%x")
             self.account_activity[date] += 1
 
+            metrics = tweet['public_metrics']
+            retweet_count = metrics['retweet_count']
+            self.retweet_count[date] += retweet_count
+            like_count = metrics['like_count']
+            self.like_count[date] += like_count
+
         # process account activity
         activity_list = []
         for k, v in self.account_activity.items():
-            activity_list.append([k, v])
+            activity_list.append([k, v, self.like_count[k], self.retweet_count[k]])
 
         def sort_by_date(e):
             return datetime.today() - datetime.strptime(e[0], '%x')
         activity_list.sort(key=sort_by_date)
 
-        activity_list_2 = []
-        for date, count in activity_list:
-            activity_list_2.append({
+        sorted_activity_list = []
+        for date, count, like_count, retweet_count in activity_list:
+            sorted_activity_list.append({
                 'date': date,
-                'count': count
+                'count': count,
+                'like': like_count,
+                'retweet': retweet_count
             })
 
         k = Counter(self.word_freq)
@@ -343,10 +356,16 @@ class TweetAnalysis:
         for element in high:
             word_freq.append({'text': element[0], 'value': element[1]})
 
+        with open(os.path.join(export_directory, filename), 'w') as f:
+            json_data = {'sentiment_count': self.result,
+                         'word_freq': word_freq,
+                         'account_activity': sorted_activity_list}
+            json.dump(json_data, f)
+
         with open(filename, 'w') as f:
             json_data = {'sentiment_count': self.result,
                          'word_freq': word_freq,
-                         'account_activity': activity_list_2}
+                         'account_activity': sorted_activity_list}
             json.dump(json_data, f)
 
         # with open("{}_processed_tweet.json".format(self.username), 'w') as f:
