@@ -1,6 +1,6 @@
 # Tweet-Sentiment-Analysis
 
-Here is the link to a demo: https://sharp-hawking-0892ce.netlify.app/
+Here is the link to a demo: https://brave-turing-0e43fc.netlify.app/
 
 ##### How to start the web application
 
