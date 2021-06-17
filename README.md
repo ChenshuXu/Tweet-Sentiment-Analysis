@@ -12,5 +12,5 @@ The web application is created with create-react-app. In the `sentiment-analysis
 
 ##### How to grab all tweets and run sentiment analysis
 
-In the `tweet-dumper` folder, run `pip install -r requirements.txt`. Then get your `Bearer Token` from [twitter developer portal](developer.twitter.com/en/portal), put it in `bearer_token` in `main.py` and run it. When it finishes, it will generate a `certikorg_tweet_analysis.json` file. It will also put this file to `sentiment-analysis-dashboard/src` folder, then refresh the web dashboard and it will load with the new analysis data.
+In the `tweet-dumper` folder, run `pip install -r requirements.txt`. Then get your `Bearer Token` from [twitter developer portal](https://developer.twitter.com/en/portal), put it in `bearer_token` in `main.py` and run it. When it finishes, it will generate a `certikorg_tweet_analysis.json` file. It will also put this file to `sentiment-analysis-dashboard/src` folder, then refresh the web dashboard and it will load with the new analysis data.
 
