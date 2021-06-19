@@ -323,7 +323,7 @@ class TweetAnalysis:
         for tweet in self.all_tweets:
             self.calculate_tweet_sentiment(tweet)
             time_text = tweet['created_at']
-            date = datetime.strptime(time_text, '%Y-%m-%dT%H:%M:%S.%f%z').strftime("%x")
+            date = datetime.strptime(time_text, '%Y-%m-%dT%H:%M:%S.%fZ').strftime("%x")
             self.account_activity[date] += 1
 
             metrics = tweet['public_metrics']
